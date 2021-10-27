@@ -29,6 +29,7 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -81,9 +82,10 @@ public class MainActivity extends AppCompatActivity {
         txtListAdapter = new TxtListAdapter(txtList, this);
         txt_list_view.setAdapter(txtListAdapter);
         txtListAdapter.setOnItemClickListener(position -> {
+            Log.e("读",readFile(getFilesDir() + "/" + files[position].getName()));
             Intent intentread = new Intent(MainActivity.this, TxtDateActivity.class);
             intentread.putExtra("txttitle", files[position].getName().substring(0, files[position].getName().lastIndexOf(".")));
-            intentread.putExtra("txmain", readFileLine(getFilesDir() + "/" + files[position].getName()));
+            intentread.putExtra("txmain", readFile(getFilesDir() + "/" + files[position].getName()));
             MainActivity.this.startActivity(intentread);
         });
         txtListAdapter.setOnItemLongClickListener(position -> {
@@ -102,6 +104,44 @@ public class MainActivity extends AppCompatActivity {
             al = ab.show();
             Log.e("TAG2", "The File doesn't not exist.");
         });
+    }
+    public static String readFile(String filename) {
+        StringBuilder fileContent = new StringBuilder("");
+        File file = new File(filename);
+        BufferedReader bufferedReader = null;
+        String str = null;
+        try {
+            if (file.exists()) {
+                bufferedReader = new BufferedReader(new FileReader(filename));
+                while ((str = bufferedReader.readLine()) != null) {
+                    if (!fileContent.toString().equals("")) {
+                        fileContent.append("\r\n");
+                    }
+                    fileContent.append(str);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+        }
+        return fileContent.toString();
+    }
+    public static String readTxt(String path){
+        String str = "";
+        try {
+            File urlFile = new File(path);
+            InputStreamReader isr = new InputStreamReader(new FileInputStream(urlFile), "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+
+            String mimeTypeLine = null ;
+            while ((mimeTypeLine = br.readLine()) != null) {
+                str = str+mimeTypeLine;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  str;
     }
 
     public String readFileLine(String strFilePath) {

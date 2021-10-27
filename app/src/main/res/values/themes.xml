@@ -19,7 +19,7 @@
 
     <style name="editTextSty" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/bottom_gray</item>
-        <item name="colorControlActivated">@color/bottom_gray</item>
+        <item name="colorControlActivated">@color/black</item>
     </style>
 <!--    <style name="ZZBDatePickerDialogLStyle" parent="android:Theme.DeviceDefault.Light.Dialog">-->
 <!--        <item name="android:datePickerStyle">@style/ZZBDatePickerLStyle</item>-->
